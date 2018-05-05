@@ -1,4 +1,4 @@
-package theuseofjdk;
+package UseOfJDK;
 
 /**
  * description:这里是string的一些方法的使用说明
@@ -12,15 +12,16 @@ public class StringJDK {
         System.out.println("=========将字符串变成一个字符数组========");
         String str = "helloWorld";
         char c[] = str.toCharArray();
+        System.out.print ("转为数组输出:" );
         for (int i = 0; i < c.length; i++) {
-            System.out.println("转为数组输出:" + c[i]);
+            System.out.print (c[i]+" ");
         }
     }
     /**
      * 从字符串中取出指定位置的字符
      */
     public static void tocharAt() {
-        System.out.println("=========从字符串中取出指定位置的字符========");
+        System.out.println("\n=========从字符串中取出指定位置的字符========");
         String str = "helloWorld";
         char c = str.charAt(3);
         System.out.println("指定字符为：" + c);
@@ -141,6 +142,17 @@ public class StringJDK {
         String str5=str.replaceAll("l", "a");
         System.out.println("替换后的结果为："+str5);
     }
+
+    /**
+     * 测试string的join（a,b)方法，将a作为连接符号，使得b数组中的元素连接起来，返回一个字符串
+     */
+    public static void testjoin(){
+        System.out.println("====join（a,b)方法，将a作为连接符号，使得b数组中的元素连接起来，返回一个字符串====");
+        String [] tmpStr={"abc","def","ghi"};
+        String jn = String.join("-", tmpStr);
+        System.out.println(jn);
+    }
+
     public static void main(String[] args) {
         tocharyArry();
         tocharAt();
@@ -155,5 +167,6 @@ public class StringJDK {
         toequals();
         toequalslgnoreCase();
         toreplaceAll();
+        testjoin();
     }
 }

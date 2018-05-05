@@ -8,90 +8,82 @@ import java.util.*;
  * Created by gaoyw on 2018/5/2.
  */
 public class DateJDK {
+
     /**
-     * 获取日期
+     * 使用Date类获取时间，各种相应的都有
+     */
+    public static void getTimeByDate(){
+        System.out.println("========使用Date类获取时间，各种相应的都有========");
+        Date date = new Date();
+        DateFormat df1 = DateFormat.getDateInstance();//日期格式，精确到日
+        System.out.println("精确到日期 ："+df1.format(date));
+        DateFormat df2 = DateFormat.getDateTimeInstance();//可以精确到时分秒
+        System.out.println("精确到时分秒 ："+df2.format(date));
+        DateFormat df3 = DateFormat.getTimeInstance();//只显示出时分秒
+        System.out.println("只显示出时分秒 ："+df3.format(date));
+        DateFormat df4 = DateFormat.getDateTimeInstance(DateFormat.FULL,DateFormat.FULL); //显示日期，周，上下午，时间（精确到秒）
+        System.out.println("显示日期，周，上下午，时间（精确到秒）： "+df4.format(date));
+        DateFormat df5 = DateFormat.getDateTimeInstance(DateFormat.LONG,DateFormat.LONG); //显示日期,上下午，时间（精确到秒）
+        System.out.println("显示日期,上下午，时间（精确到秒）："+df5.format(date));
+        DateFormat df6 = DateFormat.getDateTimeInstance(DateFormat.SHORT,DateFormat.SHORT); //显示日期，上下午,时间（精确到分）
+        System.out.println("显示日期，上下午,时间（精确到分）："+df6.format(date));
+        DateFormat df7 = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM); //显示日期，时间（精确到分）
+        System.out.println("显示日期，时间（精确到分）："+df7.format(date));
+    }
+    /**
+     * 使用Canlendar类获取时间
      **/
-    public static void getdate(){
-        System.out.println("========String转换成BigDecimal=========");
+    public static void getdateByCanlendar(){
+        System.out.println("========使用Canlendar类获取时间=========");
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH)+1;//需要加1
         int day = calendar.get(Calendar.DATE);
-        System.out.println("年份："+year+" 月份："+month+" 天数："+day);
-
+        int week_of_year = calendar.get(Calendar.WEEK_OF_YEAR);
+        int week_of_month = calendar.get(Calendar.WEEK_OF_MONTH);
+        int day_of_month = calendar.get(Calendar.DAY_OF_MONTH);//和day相同
+        int day_of_year = calendar.get(Calendar.DAY_OF_YEAR);
+        int day_of_week = calendar.get(Calendar.DAY_OF_WEEK);
+        int day_of_week_in_month = calendar.get(Calendar.DAY_OF_WEEK_IN_MONTH);//和week_of_month相同
+        int am_pm = calendar.get(Calendar.AM_PM);
+        int hour = calendar.get(Calendar.HOUR);
+        int hour_of_day = calendar.get(Calendar.HOUR_OF_DAY);//和hours相同
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+        int millisecond = calendar.get(Calendar.MILLISECOND);
+        System.out.println("年份："+year+" 月份："+month+" 天数："+day+" 时："+hour+" 分："+minute+" 秒："+second+" 毫秒："+millisecond+
+                "\n当月第几周："+week_of_month+" 当年第几周："+week_of_year+
+        " 当年第几天："+day_of_year+" 本周第几天(周日为第一天):"+day_of_week+" 上下午(上午为0，下午为1):"+am_pm);
         //获取今天的日期字符串
         String today = DateFormat.getDateInstance().format(new Date());
         System.out.println("今天是："+today);
         //获取今天的日期
-        Date d = new java.sql.Date(System.currentTimeMillis());
-        System.out.println("今天是："+d);
+//        Date d = new java.sql.Date(System.currentTimeMillis());
+//        System.out.println("今天是："+d);
     }
 
     /**
-     * 获取现在时间
+     * 使用SimpleDateFormat获取指定格式的时间字符串
      *
-     * @return 返回时间类型 yyyy-MM-dd HH:mm:ss
      */
-    public static void getNowDate() {
+    public static void getSpecificDateType() {
+        System.out.println("========使用SimpleDateFormat获取指定格式的时间字符串=========");
         Date currentTime = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String dateString = formatter.format(currentTime);
-        System.out.println(dateString);
-        ParsePosition pos = new ParsePosition(2);
-        Date currentTime_2 = formatter.parse(dateString, pos);//pos表示从字符串第几个开始读取
-        System.out.println(currentTime_2);
-    }
-
-    /**
-     * 获取现在时间
-     * @return返回短时间格式 yyyy-MM-dd
-     */
-    public static Date getNowDateShort() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(currentTime);
-        System.out.println(dateString);
-        ParsePosition pos = new ParsePosition(0);
-        Date currentTime_2 = formatter.parse(dateString, pos);
-        System.out.println(currentTime_2);
-        return currentTime_2;
-    }
-
-    /**
-     * 获取现在时间
-     *
-     * @return返回字符串格式 yyyy-MM-dd HH:mm:ss
-     */
-    public static String getStringDate() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        return dateString;
-    }
-
-    /**
-     * 获取现在时间
-     *
-     * @return 返回短时间字符串格式yyyy-MM-dd
-     */
-    public static String getStringDateShort() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(currentTime);
-        return dateString;
-    }
-
-    /**
-     * 获取时间 小时:分;秒 HH:mm:ss
-     *
-     * @return
-     */
-    public static String getTimeShort() {
-        SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");
-        Date currentTime = new Date();
-        String dateString = formatter.format(currentTime);
-        System.out.println(dateString);
-        return dateString;
+        System.out.println("yyyy-MM-dd HH:mm:ss格式的时间字符串："+dateString);
+        formatter = new SimpleDateFormat("yyyy-MM-dd");
+        dateString = formatter.format(currentTime);
+        System.out.println("yyyy-MM-dd格式的时间字符串："+dateString);
+        formatter = new SimpleDateFormat("HH:mm:ss");
+        dateString = formatter.format(currentTime);
+        System.out.println("HH:mm:ss格式的时间字符串："+dateString);
+        formatter = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分ss秒");
+        dateString = formatter.format(currentTime);
+        System.out.println("yyyy年MM月dd日 HH时mm分ss秒格式的时间字符串："+dateString);
+//        ParsePosition pos = new ParsePosition(0);
+//        Date currentTime_2 = formatter.parse(dateString, pos);//pos表示从字符串第几个开始读取
+//        System.out.println(currentTime_2);
     }
 
     /**
@@ -99,45 +91,23 @@ public class DateJDK {
      *
      * @return
      */
-    public static void strToanotherStr() {
+    public static void strToAnotherStr() {
+        System.out.println("======将字符串 yyyy-MM-dd HH:mm:ss转化为yyyy年MM月dd日======");
         String strDate = "2017-12-01 10:10:43";
+        System.out.println("输入的时间字符串："+strDate);
+        String output;
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ParsePosition pos = new ParsePosition(0);
         Date strtodate = formatter.parse(strDate, pos);
-        System.out.println(strtodate);
-        SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy年MM月dd日");
-        String str = formatter2.format(strtodate);
-        System.out.println(str);
+        System.out.println("yyyy-MM-dd HH:mm:ss"+strtodate);
+        formatter = new SimpleDateFormat("yyyy年MM月dd日");
+        output = formatter.format(strtodate);
+        System.out.println("yyyy年MM月dd日格式的字符串："+output);
     }
 
-    /**
-     * 将长时间格式时间转换为字符串 yyyy-MM-dd HH:mm:ss
-     *
-     * @param dateDate
-     * @return
-     */
-    public static String dateToStrLong(java.util.Date dateDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(dateDate);
-        return dateString;
-    }
-
-    /**
-     * 将短时间格式时间转换为字符串 yyyy-MM-dd
-     *
-     * @param dateDate
-     * @param k
-     * @return
-     */
-    public static String dateToStr(java.util.Date dateDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        String dateString = formatter.format(dateDate);
-        return dateString;
-    }
 
     /**
      * 将短时间格式字符串转换为时间 yyyy-MM-dd
-     *
      * @param strDate
      * @return
      */
@@ -149,18 +119,7 @@ public class DateJDK {
     }
 
     /**
-     * 得到现在时间
-     *
-     * @return
-     */
-    public static Date getNow() {
-        Date currentTime = new Date();
-        return currentTime;
-    }
-
-    /**
      * 提取一个月中的最后一天
-     *
      * @param day
      * @return
      */
@@ -171,43 +130,6 @@ public class DateJDK {
         return date_3_hm_date;
     }
 
-    /**
-     * 得到现在时间
-     *
-     * @return 字符串 yyyyMMdd HHmmss
-     */
-    public static String getStringToday() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd HHmmss");
-        String dateString = formatter.format(currentTime);
-        return dateString;
-    }
-
-    /**
-     * 得到现在小时
-     */
-    public static String getHour() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        String hour;
-        hour = dateString.substring(11, 13);
-        return hour;
-    }
-
-    /**
-     * 得到现在分钟
-     *
-     * @return
-     */
-    public static String getTime() {
-        Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String dateString = formatter.format(currentTime);
-        String min;
-        min = dateString.substring(14, 16);
-        return min;
-    }
 
     /**
      * 根据用户传入的时间表示格式，返回当前时间的格式 如果是yyyyMMdd，注意字母y不能大写。
@@ -402,7 +324,6 @@ public class DateJDK {
 
     /**
      * 两个时间之间的天数
-     *
      * @param date1
      * @param date2
      * @return
@@ -441,7 +362,6 @@ public class DateJDK {
 
     /**
      * 返回一个随机数
-     *
      * @param i
      * @return
      */
@@ -463,8 +383,7 @@ public class DateJDK {
      */
     public static boolean RightDate(String date) {
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        ;
+        SimpleDateFormat sdf ;
         if (date == null)
             return false;
         if (date.length() > 10) {
@@ -483,10 +402,9 @@ public class DateJDK {
 
 
     public static void main(String[] args) {
-//        getdate();
-//        getNowDate();
-//        getNowDateShort();
-//        getTimeShort();
-        strToanotherStr();
+        getTimeByDate();
+        getdateByCanlendar();
+        getSpecificDateType();
+        strToAnotherStr();
     }
 }

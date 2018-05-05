@@ -1,12 +1,25 @@
-package theuseofjdk;
+package UseOfJDK;
 
+
+import java.io.*;
 import java.util.*;
+
 
 /**
  * description:这里是list的使用方法说明
  * Created by gaoyw on 2018/5/2.
  */
 public class ListJDK {
+    static List<Person> srcList;
+    static {
+        srcList=new ArrayList<Person>();
+        Person p1=new Person(20,"123");
+        Person p2=new Person(21,"ABC");
+        Person p3=new Person(22,"abc");
+        srcList.add(p1);
+        srcList.add(p2);
+        srcList.add(p3);
+    }
 
     public static void initialize(){
         List<String> name2;
@@ -133,12 +146,135 @@ public class ListJDK {
         Arrays.stream(s).forEach(ele -> System.out.print(ele + " "));
     }
 
-    public static void main(String[] args){
+    public static void getSetFromList(){
+        List<String> list = Arrays.asList("A","Repeat","B","Repeat","C","Repeat","D");
+        List list1 = new ArrayList(new HashSet(list));
+        list1.stream().forEach(ele -> System.out.print (ele+" "));
+    }
+
+    /**
+     * 获取list里面的互不相同的元素，并保留原有顺序
+     */
+    public static void getUniqueList(){
+        List<String> list = Arrays.asList("A","Repeat","B","Repeat","C","Repeat","D");
+        //方法1
+        List listRe = new ArrayList();
+        Set set = new HashSet(list);
+        for (String s : list){
+            if (set.contains(s)){
+                listRe.add(s);
+                set.remove(s);
+            }
+        }
+        System.out.println("去重后的集合： " +listRe);
+
+        //方法2
+        Set set2 = new  HashSet();
+        List newList = new  ArrayList();
+        for (String cd:list) {
+            if(set2.add(cd)){
+                newList.add(cd);
+            }
+        }
+        System.out.println( "去重后的集合： " + newList);
+    }
+
+
+    public static void lowcopy(){
+        System.out.println("====使用addAll进行的是浅拷贝====");
+        List<Person> destList=new ArrayList<Person>();
+        destList.addAll(srcList);
+        System.out.println("更改之前");
+        destList.stream().forEach(ele->System.out.print(ele.toString()+" "));
+        srcList.get(0).setAge(100);
+        System.out.println("\n更改原版之后");
+        destList.stream().forEach(ele->System.out.print(ele.toString()+" "));
+        srcList.get(0).setAge(20);
+        System.out.println("\n====使用clone()和System.arraycopy进行的是浅拷贝====");
+        Person[] srcPersons=srcList.toArray(new Person[0]);
+        Person[] destPersons=new Person[srcPersons.length];
+        //以下2种方法都是不行的
+        System.arraycopy(srcPersons, 0, destPersons, 0, srcPersons.length);
+        destPersons=srcPersons.clone();
+
+
+        System.out.println("更改之前");
+        for (Person p:destPersons){
+            System.out.print(p.toString()+" ");
+        }
+        srcPersons[0].setAge(100);
+        System.out.println("\n更改原版之后");
+        for (Person p:destPersons){
+            System.out.print(p.toString()+" ");
+        }
+
+//        List<Person> destList=Arrays.asList(destPersons);
+//        printList(destList);
+    }
+
+    /**
+     * 基本上大多数拷贝方法都是浅拷贝，有时我们需要深度拷贝
+     *
+     */
+    public static <T> List<T> deepCopy(List<T> src) throws IOException, ClassNotFoundException {
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
+        ObjectOutputStream out = new ObjectOutputStream(byteOut);
+        out.writeObject(src);
+
+        ByteArrayInputStream byteIn = new ByteArrayInputStream(byteOut.toByteArray());
+        ObjectInputStream in = new ObjectInputStream(byteIn);
+        @SuppressWarnings("unchecked")
+        List<T> dest = (List<T>) in.readObject();
+        return dest;
+    }
+    public static void depcopyUse() throws IOException, ClassNotFoundException {
+        List<Person> destList=deepCopy(srcList);
+        System.out.println("更改之前");
+        destList.stream().forEach(ele->System.out.print(ele.toString()+" "));
+        srcList.get(0).setAge(100);
+        System.out.println("\n更改原版之后");
+        destList.stream().forEach(ele->System.out.print(ele.toString()+" "));
+    }
+
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
 //        initialize();
 //        addAndSet();
 //        IndexOf();
 //        sublist();
 //        betweenList();
-        Arrar2List();
+//        Arrar2List();
+//        getUniqueList();
+//        getSetFromList();
+//        depcopyUse();
+        lowcopy();
+    }
+
+    static class Person implements Serializable{
+        private int age;
+        private String name;
+
+        public Person(){};
+        public Person(int age,String name){
+            this.age=age;
+            this.name=name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+        public void setAge(int age) {
+            this.age = age;
+        }
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String toString(){
+            return this.name+"-->"+this.age;
+        }
+
     }
 }
